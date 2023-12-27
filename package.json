@@ -7,7 +7,7 @@
     "node": "16.6.x"
   },
   "scripts": {
-    "start": "concurrently \"NODE_ENV=prod node main.js\" \"node server.js\"",
+    "start": "NODE_ENV=prod node main.js",
     "serve": "NODE_ENV=dev node main.js",
     "watch": "nodemon main.js"
   },

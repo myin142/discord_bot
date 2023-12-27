@@ -2,7 +2,7 @@ const fs = require("fs");
 const args = process.argv.slice(2);
 const configPath = "./config.json";
 
-if (args.length >= 3) {
+if (args.length >= 1) {
   const config = {
     prefix: "?",
     token: args[0],

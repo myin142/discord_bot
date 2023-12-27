@@ -27,11 +27,11 @@ const createCommands = (message) => {
             .then((response) => response.json())
             .then((data) => {
                 message.channel.send(data[0].url);
-                if (Object.keys(data[0].breeds).length !== 0) {
-                    message.channel.send(
-                        `This ${animal} breed is called: **${data[0].breeds[0].name}**`
-                    );
-                }
+                // if (Object.keys(data[0].breeds).length !== 0) {
+                //     message.channel.send(
+                //         `This ${animal} breed is called: **${data[0].breeds[0].name}**`
+                //     );
+                // }
             });
     };
     //If !me command is called
@@ -106,16 +106,16 @@ const createCommands = (message) => {
                 })),
             at: () => get_avatar(),
         },
-        draw: {
-            icon: 0x270f,
-            daily: postSketchDaily,
-            weeklyGesture: scheduleWeeklyGesture,
-            help: runner =>
-                runner.send(createHelp("draw", {
-                    daily: "to get current SketchDaily topic",
-                    'weeklyGesture [channelId] [dayOfWeek|6(Saturday)] [time|20:00]': 'schedule weekly gesture session for the next week',
-                })),
-        },
+        // draw: {
+        //     icon: 0x270f,
+        //     daily: postSketchDaily,
+        //     weeklyGesture: scheduleWeeklyGesture,
+        //     help: runner =>
+        //         runner.send(createHelp("draw", {
+        //             daily: "to get current SketchDaily topic",
+        //             'weeklyGesture [channelId] [dayOfWeek|6(Saturday)] [time|20:00]': 'schedule weekly gesture session for the next week',
+        //         })),
+        // },
         random: {
             icon: 0x2753,
             coin: r => (randomNumber(0, 1) === 0 ? r.send("Head") : r.send("Tails")),
