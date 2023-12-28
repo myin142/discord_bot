@@ -48,9 +48,10 @@ const sendCharacter = (runner, char) => {
   runner.send(embed);
 };
 
+const MAX_POKEMON_ID = 1010;
 const randomPokemon = async (runner, count = 1) => {
   if (count < 1) return;
-  const ids = randomNumbers(1, 898, Math.min(count, 5));
+  const ids = randomNumbers(1, MAX_POKEMON_ID, Math.min(count, 5));
   if (ids.length == 0) return;
 
   try {
