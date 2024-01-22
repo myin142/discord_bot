@@ -8,6 +8,7 @@ const fetch = require("node-fetch");
 const Discord = require('discord.js');
 
 const { dog_token, cat_token, prefix } = require('../../config.json');
+const { serverStatus } = require("./server");
 
 const createCommands = (message) => {
     //API for animal facts
@@ -157,6 +158,13 @@ const createCommands = (message) => {
                 runner.send(createHelp("anisearch", {
                     "": "`[url]` to reverse search an anime with an image"
                 })),
+        },
+        server: {
+            icon: 0x1F5A5,
+            _: (r, ...args) => serverStatus(r, ...args),
+            help: runner => runner.send(createHelp("server", {
+                "": "Check the status of the server"
+            }))
         }
     };
 
