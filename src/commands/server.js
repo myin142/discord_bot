@@ -5,31 +5,33 @@ const runCmd = (cmd) => {
     const child = spawn("sh", ["-c", cmd]);
 
     child.stdout.on("data", (data) => {
-      console.log('Received data', data);
-      resolve(data);
+      console.log('Received data: ' + data);
+      resolve(data + '');
     });
 
     child.stderr.on("data", (data) => {
-      console.log('Received error', data);
+      console.log('Received error: ' + data);
       reject(data);
     });
 
     child.addListener("exit", (code) => {
-      console.log('Received exit code', code);
+      console.log('Received exit code: ' + code);
       resolve("");
     });
   });
 };
 
 const zerotierStatus = async () => {
+  console.log('Check zerotier status');
   const countStr = await runCmd('netstat -lnut | grep ":9993" | wc -l');
   const count = parseInt(countStr);
   return count > 0;
 };
 
 const getPalServerPID = async () => {
+  console.log('Check pal server status');
   const line = await runCmd(`ps -a | grep "palserver.sh" | awk '{ print $1 }'`);
-  console.log('Check pal server status', line);
+
   if (!line || line.trim() !== "") {
     const x = parseInt(line);
     if (isNaN(x)) {
