@@ -5,14 +5,19 @@ const runCmd = (cmd) => {
     const child = spawn("sh", ["-c", cmd]);
 
     child.stdout.on("data", (data) => {
+      console.log('Received data', data);
       resolve(data);
     });
 
     child.stderr.on("data", (data) => {
+      console.log('Received error', data);
       reject(data);
     });
 
-    child.addListener("exit", (code) => resolve(""));
+    child.addListener("exit", (code) => {
+      console.log('Received exit code', code);
+      resolve("");
+    });
   });
 };
 
@@ -24,6 +29,7 @@ const zerotierStatus = async () => {
 
 const getPalServerPID = async () => {
   const line = await runCmd(`ps -a | grep "palserver.sh" | awk '{ print $1 }'`);
+  console.log('Check pal server status', line);
   if (!line || line.trim() !== "") {
     const x = parseInt(line);
     if (isNaN(x)) {
