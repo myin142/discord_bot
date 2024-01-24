@@ -1,5 +1,7 @@
 const { spawn, execFile } = require("child_process");
 
+class KillCommand extends Error {}
+
 const runCmd = (cmd) => {
   return new Promise((resolve, reject) => {
     execFile("sh", ["-c", cmd], (error, stdout, stderr) => {
@@ -94,6 +96,18 @@ const killProgram = async (pid) => {
   await runCmd(`kill ${pid}`);
 };
 
+const zerotierIp = async (runner) => {
+  const ip = await runCmd(
+    `ip address | grep zt5u4u6p76 | grep inet | awk '{ print $2 }' | cut -d '/' -f 1`
+  );
+  if (ip == null) {
+    runner.send("Failed to find zerotier ip");
+    return;
+  }
+
+  runner.send(`Zerotier IP: ${ip}`);
+};
+
 const serverStatus = async (runner) => {
   try {
     const isOnline = await zerotierStatus();
@@ -106,4 +120,4 @@ PalServer: ${palID != null ? "online" : "offline"}
   }
 };
 
-module.exports = { serverStatus, startPalServer, stopPalServer };
+module.exports = { serverStatus, startPalServer, stopPalServer, zerotierIp, KillCommand };

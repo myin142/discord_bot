@@ -8,7 +8,13 @@ const fetch = require("node-fetch");
 const Discord = require("discord.js");
 
 const { dog_token, cat_token, prefix } = require("../../config.json");
-const { serverStatus, startPalServer, stopPalServer } = require("./server");
+const {
+  serverStatus,
+  startPalServer,
+  stopPalServer,
+  zerotierIp,
+  KillCommand,
+} = require("./server");
 
 const createCommands = (message) => {
   //API for animal facts
@@ -164,7 +170,7 @@ const createCommands = (message) => {
     kill: {
       icon: 0x274c,
       _: () => {
-        throw new Error("I killed myself");
+        throw new KillCommand("I killed myself");
       },
       help: (runner) =>
         runner.send(
@@ -188,12 +194,14 @@ const createCommands = (message) => {
       _: (r, ...args) => serverStatus(r, ...args),
       startPal: (r) => startPalServer(r),
       stopPal: (r) => stopPalServer(r),
+      ip: (r) => zerotierIp(r),
       help: (runner) =>
         runner.send(
           createHelp("server", {
             "": "Check the status of the server",
-            "startPal": "Start PalServer",
-            "stopPal": "Stop PalServer"
+            ip: "Print server ip for zerotier",
+            startPal: "Start PalServer",
+            stopPal: "Stop PalServer",
           })
         ),
     },

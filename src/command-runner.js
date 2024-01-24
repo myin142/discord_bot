@@ -5,6 +5,7 @@ const {
   listCommands,
   removeCommand,
 } = require("./commands/autocmd.js");
+const { KillCommand } = require("./commands/server");
 class CommandRunner {
   constructor(message, prefix, commands) {
     this.message = message;
@@ -63,8 +64,12 @@ class CommandRunner {
         return call(this, ...args.slice(1));
       }
     } catch (e) {
-      console.log('Error', e);
-      this.send("Failed to execute command: " + e);
+      if (e instanceof KillCommand) {
+        throw e;
+      } else {
+        console.log("Error", e);
+        this.send("Failed to execute command: " + e);
+      }
     }
   }
 }
