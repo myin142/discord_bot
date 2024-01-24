@@ -169,7 +169,8 @@ const createCommands = (message) => {
     },
     kill: {
       icon: 0x274c,
-      _: () => {
+      _: (r) => {
+        r.send('I killed myself');
         throw new KillCommand("I killed myself");
       },
       help: (runner) =>
