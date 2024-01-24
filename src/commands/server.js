@@ -77,7 +77,7 @@ const zerotierStatus = async () => {
 const getPalServerPID = async () => {
   console.log("Check pal server status");
   const line = await runCmd(
-    `ps -a | grep "PalServer-Linux" | awk '{ print $1 }'`
+    `ps x | grep "PalServer-Linux" | grep -v "grep" | awk '{ print $1 }'`
   );
 
   if (!line || line.trim() !== "") {
