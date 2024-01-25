@@ -19,15 +19,16 @@ const runCmd = (cmd) => {
 const startProgram = async (cmd) => {
   return new Promise((resolve, reject) => {
     const child = spawn("sh", ["-c", cmd]);
+    const result = '';
     child.stdout.on("data", (data) => {
-      resolve(data + "");
+      result += data;
     });
     child.stderr.on("data", (data) => {
       reject(data);
     });
     child.addListener("exit", (code) => {
-      console.log("Received exit code: " + code);
-      resolve("");
+      console.log(`Received exit code ${code} and data: ${result}`);
+      resolve(result);
     });
   });
 };
@@ -66,6 +67,17 @@ const stopPalServer = async (runner) => {
     runner.send("Failed to stop server: " + e);
   }
 };
+
+const updatePalServer = async (runner) => {
+  try {
+    console.log("Updating PalServer");
+
+    const result = await runCmd('steamcmd +login anonymous +app_update 2394010 validate +quit');
+    runner.send("PalServer updated");
+  } catch(e) {
+    runner.send("Failed to update server: " + e);
+  }
+}
 
 const zerotierStatus = async () => {
   console.log("Check zerotier status");
@@ -120,4 +132,4 @@ PalServer: ${palID != null ? "online" : "offline"}
   }
 };
 
-module.exports = { serverStatus, startPalServer, stopPalServer, zerotierIp, KillCommand };
+module.exports = { serverStatus, startPalServer, stopPalServer, zerotierIp, updatePalServer, KillCommand };

@@ -14,6 +14,7 @@ const {
   stopPalServer,
   zerotierIp,
   KillCommand,
+  updatePalServer,
 } = require("./server");
 
 const createCommands = (message) => {
@@ -195,6 +196,7 @@ const createCommands = (message) => {
       _: (r, ...args) => serverStatus(r, ...args),
       startPal: (r) => startPalServer(r),
       stopPal: (r) => stopPalServer(r),
+      updatePal: (r) => updatePalServer(r),
       ip: (r) => zerotierIp(r),
       help: (runner) =>
         runner.send(
@@ -203,6 +205,7 @@ const createCommands = (message) => {
             ip: "Print server ip for zerotier",
             startPal: "Start PalServer",
             stopPal: "Stop PalServer",
+            updatePal: "Update PalServer through steam",
           })
         ),
     },
