@@ -19,7 +19,7 @@ const runCmd = (cmd) => {
 const startProgram = async (cmd) => {
   return new Promise((resolve, reject) => {
     const child = spawn("sh", ["-c", cmd]);
-    const result = '';
+    const result = "";
     child.stdout.on("data", (data) => {
       result += data;
     });
@@ -72,12 +72,14 @@ const updatePalServer = async (runner) => {
   try {
     console.log("Updating PalServer");
 
-    const result = await runCmd('steamcmd +login anonymous +app_update 2394010 validate +quit');
+    const result = await runCmd(
+      "steamcmd +login anonymous +app_update 2394010 validate +quit"
+    );
     runner.send("PalServer updated");
-  } catch(e) {
+  } catch (e) {
     runner.send("Failed to update server: " + e);
   }
-}
+};
 
 const zerotierStatus = async () => {
   console.log("Check zerotier status");
@@ -109,15 +111,19 @@ const killProgram = async (pid) => {
 };
 
 const zerotierIp = async (runner) => {
-  const ip = await runCmd(
-    `ip address | grep zt5u4u6p76 | grep inet | awk '{ print $2 }' | cut -d '/' -f 1`
+  const zeroIp = await runCmd(
+    `ip address show zt5u4u6p76 | grep inet | awk '{ print $2 }' | cut -d '/' -f 1`
   );
-  if (ip == null) {
-    runner.send("Failed to find zerotier ip");
-    return;
-  }
+  const ip4 = await runCmd(
+    `ip address show wlan0 | grep inet | awk '{ print $2 }' | cut -d '/' -f 1`
+  );
+  const ip6 = await runCmd(
+    `ip address show wlan0 | grep inet6 | awk '{ print $2 }' | cut -d '/' -f 1`
+  );
 
-  runner.send(`Zerotier IP: ${ip}`);
+  runner.send(`Zerotier IP: ${zeroIp ?? '-'}`);
+  runner.send(`Local IPv4: ${ip4 ?? '-'}`);
+  runner.send(`Local IPv6: ${ip6 ?? '-'}`);
 };
 
 const serverStatus = async (runner) => {
@@ -132,4 +138,11 @@ PalServer: ${palID != null ? "online" : "offline"}
   }
 };
 
-module.exports = { serverStatus, startPalServer, stopPalServer, zerotierIp, updatePalServer, KillCommand };
+module.exports = {
+  serverStatus,
+  startPalServer,
+  stopPalServer,
+  zerotierIp,
+  updatePalServer,
+  KillCommand,
+};
