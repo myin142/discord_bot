@@ -28,7 +28,7 @@ const startProgram = async (cmd) => {
     });
     child.addListener("exit", (code) => {
       console.log(`Received exit code ${code}`);
-      resolve(result);
+      resolve("");
     });
   });
 };
