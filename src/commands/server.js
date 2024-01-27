@@ -19,15 +19,15 @@ const runCmd = (cmd) => {
 const startProgram = async (cmd) => {
   return new Promise((resolve, reject) => {
     const child = spawn("sh", ["-c", cmd]);
-    const result = "";
+
     child.stdout.on("data", (data) => {
-      result += data;
+      resolve(data);
     });
     child.stderr.on("data", (data) => {
       reject(data);
     });
     child.addListener("exit", (code) => {
-      console.log(`Received exit code ${code} and data: ${result}`);
+      console.log(`Received exit code ${code}`);
       resolve(result);
     });
   });
