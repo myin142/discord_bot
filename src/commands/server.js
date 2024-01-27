@@ -112,13 +112,13 @@ const killProgram = async (pid) => {
 
 const zerotierIp = async (runner) => {
   const zeroIp = await runCmd(
-    `ip address show zt5u4u6p76 | grep inet | awk '{ print $2 }' | cut -d '/' -f 1`
+    `ip address show zt5u4u6p76 | grep "inet " | awk '{ print $2 }' | cut -d '/' -f 1`
   );
   const ip4 = await runCmd(
-    `ip address show wlan0 | grep inet | awk '{ print $2 }' | cut -d '/' -f 1`
+    `ip address show wlan0 | grep "inet " | awk '{ print $2 }' | cut -d '/' -f 1`
   );
   const ip6 = await runCmd(
-    `ip address show wlan0 | grep inet6 | awk '{ print $2 }' | cut -d '/' -f 1`
+    `ip address show wlan0 | grep "inet6 " | awk '{ print $2 }' | cut -d '/' -f 1`
   );
 
   runner.send(`Zerotier IP: ${zeroIp ?? '-'}`);
