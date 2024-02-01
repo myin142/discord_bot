@@ -194,7 +194,7 @@ const createCommands = (message) => {
     server: {
       icon: 0x1f5a5,
       _: (r, ...args) => serverStatus(r, ...args),
-      startPal: (r) => startPalServer(r),
+      startPal: (r, ...args) => startPalServer(r, ...args),
       stopPal: (r) => stopPalServer(r),
       updatePal: (r) => updatePalServer(r),
       ip: (r) => zerotierIp(r),
@@ -203,7 +203,7 @@ const createCommands = (message) => {
           createHelp("server", {
             "": "Check the status of the server",
             ip: "Print server ip for zerotier",
-            startPal: "Start PalServer",
+            'startPal [true|false]': "Start PalServer with or without auto update",
             stopPal: "Stop PalServer",
             updatePal: "Update PalServer through steam",
           })
