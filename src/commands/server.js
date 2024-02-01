@@ -35,7 +35,7 @@ const startProgram = async (cmd) => {
 
 const startPalServer = async (runner, autoupdate = false) => {
   try {
-    console.log("Starting PalServer");
+    runner.send("Starting PalServer");
 
     const id = await getPalServerPID();
     if (id != null) {
@@ -48,7 +48,7 @@ const startPalServer = async (runner, autoupdate = false) => {
     }
 
     const line = await startProgram("$HOME/palserver.sh");
-    console.log("Started pal server " + line);
+    runner.send("Started PalServer");
   } catch (e) {
     runner.send("Failed to start server: " + e);
   }
@@ -56,7 +56,7 @@ const startPalServer = async (runner, autoupdate = false) => {
 
 const stopPalServer = async (runner) => {
   try {
-    console.log("Stopping PalServer");
+    runner.send("Stopping PalServer");
 
     const id = await getPalServerPID();
     if (id == null) {
@@ -65,7 +65,7 @@ const stopPalServer = async (runner) => {
     }
 
     const line = await killProgram(id);
-    runner.send("PalServer is stopping");
+    runner.send("PalServer stopped");
     console.log("Stopping: " + line);
   } catch (e) {
     runner.send("Failed to stop server: " + e);
@@ -74,7 +74,7 @@ const stopPalServer = async (runner) => {
 
 const updatePalServer = async (runner) => {
   try {
-    console.log("Updating PalServer");
+    runner.send("Updating PalServer");
 
     const result = await runCmd(
       "steamcmd +login anonymous +app_update 2394010 validate +quit"
