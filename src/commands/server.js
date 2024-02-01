@@ -43,6 +43,8 @@ const startPalServer = async (runner) => {
       return;
     }
 
+    await updatePalServer(runner, true);
+
     const line = await startProgram("$HOME/palserver.sh");
     console.log("Started pal server " + line);
   } catch (e) {
@@ -68,14 +70,16 @@ const stopPalServer = async (runner) => {
   }
 };
 
-const updatePalServer = async (runner) => {
+const updatePalServer = async (runner, silent = false) => {
   try {
     console.log("Updating PalServer");
 
     const result = await runCmd(
       "steamcmd +login anonymous +app_update 2394010 validate +quit"
     );
-    runner.send("PalServer updated");
+    if (!silent) {
+      runner.send("PalServer updated");
+    }
   } catch (e) {
     runner.send("Failed to update server: " + e);
   }
@@ -121,9 +125,9 @@ const zerotierIp = async (runner) => {
     `ip address show wlan0 | grep "inet6 " | awk '{ print $2 }' | cut -d '/' -f 1`
   );
 
-  runner.send(`Zerotier IP: ${zeroIp ?? '-'}`);
-  runner.send(`Local IPv4: ${ip4 ?? '-'}`);
-  runner.send(`Local IPv6: ${ip6 ?? '-'}`);
+  runner.send(`Zerotier IP: ${zeroIp ?? "-"}`);
+  runner.send(`Local IPv4: ${ip4 ?? "-"}`);
+  runner.send(`Local IPv6: ${ip6 ?? "-"}`);
 };
 
 const serverStatus = async (runner) => {
